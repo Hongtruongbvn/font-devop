@@ -1,41 +1,33 @@
-name: Deploy React Frontend to VPS
+name: Build and Deploy Frontend
 
 on:
   push:
-    branches:
-      - main # Hoặc branch bạn muốn CI/CD
+    branches: [main]
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout code
-        uses: actions/checkout@v4
+      - name: Checkout source code
+        uses: actions/checkout@v3
 
-      - name: 🟨 Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: 20
 
-      - name: 📦 Install dependencies
+      - name: Install dependencies
+        working-directory: ./font-devop
         run: npm install
-        working-directory: font-devop
 
-      - name: 🔨 Build React app
+      - name: Build frontend
+        working-directory: ./font-devop
         run: npm run build
-        working-directory: font-devop
 
-      - name: 📡 Deploy via SSH (upload dist to VPS)
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          password: ${{ secrets.VPS_PASSWORD }}
-          port: ${{ secrets.VPS_PORT }}
-          source: "font-devop/dist/*"
-          target: "${{ secrets.VPS_FE_PATH }}/dist"
-          strip_components: 2
+      - name: Install sshpass
+        run: sudo apt-get update && sudo apt-get install -y sshpass
 
-      - name: ✅ Done!
-        run: echo "Frontend deployed to VPS successfully!"
+      - name: Deploy to VPS via scp
+        run: |
+          sshpass -p "${{ secrets.VPS_PASSWORD }}" scp -o StrictHostKeyChecking=no -P ${{ secrets.VPS_PORT }} -r ./font-devop/dist ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/srv/font_devop/frontend
