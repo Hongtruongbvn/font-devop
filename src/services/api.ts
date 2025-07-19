@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { Game, Purchase, Rental } from "../types/types";
+import type { Purchase, Rental } from "../types/types";
 
 const API_URL = "https://backdevop.nurseryschool.website";
 

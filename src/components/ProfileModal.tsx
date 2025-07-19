@@ -70,6 +70,7 @@ const ProfileModal = ({ isOpen, onClose, userId }: ProfileModalProps) => {
     try {
       toast.info("🔗 Redirecting to payment gateway...");
       const res = await rechargeCoin(rechargeAmount);
+      console.log(res);
       alert("✅ Recharge successful!");
     } catch (error: any) {
       toast.error(
