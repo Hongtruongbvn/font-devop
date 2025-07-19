@@ -1,7 +1,7 @@
 import axios from "axios";
 import type { Game, Purchase, Rental } from "../types/types";
 
-const API_URL = "http://localhost:8080";
+const API_URL = "https://backdevop.nurseryschool.website";
 
 const api = axios.create({
   baseURL: API_URL,
