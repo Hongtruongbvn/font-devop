@@ -15,7 +15,7 @@ interface DecodedToken {
 }
 
 const Home: React.FC = () => {
-  const [games, setGames] = useState<Game[]>([]);
+  const [games, setGames] = useState<Game[] | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -84,8 +84,8 @@ const Home: React.FC = () => {
         ) : (
           <>
             <div className="games-grid">
-              {games.map((game) => (
-                <GameCard key={game.id} game={game} />
+              {games?.map?.((game) => (
+                <GameCard game={game} key={game._id} />
               ))}
             </div>
 
