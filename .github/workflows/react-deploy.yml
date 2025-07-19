@@ -21,12 +21,11 @@ jobs:
         run: npm install
 
       - name: Build frontend
-        working-directory: ./font-devop
-        run: npm run build
+        run: npm run build  # ✅ Xóa working-directory
 
       - name: Install sshpass
         run: sudo apt-get update && sudo apt-get install -y sshpass
 
       - name: Deploy to VPS via scp
         run: |
-          sshpass -p "${{ secrets.VPS_PASSWORD }}" scp -o StrictHostKeyChecking=no -P ${{ secrets.VPS_PORT }} -r ./font-devop/dist ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/srv/font_devop/frontend
+          sshpass -p "${{ secrets.VPS_PASSWORD }}" scp -o StrictHostKeyChecking=no -P ${{ secrets.VPS_PORT }} -r ./dist ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/srv/font_devop/frontend
